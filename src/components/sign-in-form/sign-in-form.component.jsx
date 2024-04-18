@@ -1,13 +1,11 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import {
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
 import './sign-in-form.styles.scss';
-import { UserContext } from '../../contexts/user.context';
 
 const defaultFormFields = {
   email: '',
@@ -17,7 +15,6 @@ const defaultFormFields = {
 function SignInForm() {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
-  const { setCurrentUser } = useContext(UserContext);
   return (
     <div className='sign-up-container'>
       <h2>Already have an account?</h2>
@@ -59,11 +56,7 @@ function SignInForm() {
   async function handleFormSubmit(event) {
     event.preventDefault();
     try {
-      const { user } = await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      setCurrentUser(user);
+      await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
       alert('Signed In');
     } catch (error) {
@@ -75,8 +68,7 @@ function SignInForm() {
     setFormFields(defaultFormFields);
   }
   async function signInWithGoogle() {
-    const { user } = await signInWithGooglePopup();
-    setCurrentUser(user);
+    await signInWithGooglePopup();
     alert('Signed In');
   }
 }

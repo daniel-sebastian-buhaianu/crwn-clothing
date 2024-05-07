@@ -5,7 +5,7 @@ import {
 } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
-import './sign-up-form.styles.scss';
+import { SignUpContainer } from './sign-up-form.styles';
 
 const defaultFormFields = {
   displayName: '',
@@ -17,8 +17,9 @@ const defaultFormFields = {
 function SignUpForm() {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
+
   return (
-    <div className='sign-up-container'>
+    <SignUpContainer>
       <h2>Sign up with your email and password</h2>
       <form onSubmit={handleFormSubmit}>
         <FormInput
@@ -55,12 +56,14 @@ function SignUpForm() {
         />
         <Button type='submit'>Sign Up</Button>
       </form>
-    </div>
+    </SignUpContainer>
   );
+
   function handleInputChange(event) {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   }
+
   async function handleFormSubmit(event) {
     event.preventDefault();
     if (password !== confirmPassword) {
@@ -84,6 +87,7 @@ function SignUpForm() {
       }
     }
   }
+
   function resetFormFields() {
     setFormFields(defaultFormFields);
   }
